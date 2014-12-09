@@ -107,8 +107,10 @@ function build_old()
   NUM_CPUS=`grep "processor" /proc/cpuinfo | sort -u | wc -l`
   [ $NUM_CPUS -gt 8 ] && NUM_CPUS=8
 
-  export MILESTONE="$OBF_BUILD_NUMBER"
-  export BUILD_NUMBER="$OBF_BUILD_DATE"
+  export MILESTONE="fcs"
+  export JDK_UPDATE_VERSION=$OBF_UPDATE_VERSION
+  export JRE_RELEASE_VERSION=1.7.0_$OBF_UPDATE_VERSION
+  export BUILD_NUMBER=$OBF_JDK_BUILD_NUMBER
   export LD_LIBRARY_PATH=
   export ALT_BOOTDIR=$JAVA_HOME
   export ALLOW_DOWNLOADS=true
@@ -234,7 +236,7 @@ CPU_BUILD_ARCH=`uname -m`
 export JDK_BUNDLE_VENDOR="OBuildFactory"
 export BUNDLE_VENDOR="OBuildFactory"
 
-echo "Calculated MILESTONE=$OBF_MILESTONE, BUILD_NUMBER=$OBF_BUILD_NUMBER"
+echo "Calculated MILESTONE=$OBF_MILESTONE, BUILD_NUMBER=$OBF_BUILD_NUMBER, BUILD_DATE=$OBF_BUILD_DATE"
 
 #
 # Ensure cacerts are available

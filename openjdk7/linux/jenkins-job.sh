@@ -47,6 +47,8 @@ export OBF_MILESTONE=`hg tags | grep $TAG_FILTER | head -1 | cut -d ' ' -f 1 | s
 export OBF_BUILD_NUMBER=`hg tags | grep $TAG_FILTER | head -1 | sed "s/$TAG_FILTER//" | cut -d ' ' -f 1 | sed 's/^-//'`
 export OBF_BUILD_DATE=`date +%Y%m%d`
 export OBF_BASE_ARCH=`uname -m`
+export OBF_UPDATE_VERSION=`hg tags | grep $TAG_FILTER | head -1 | sed "s/$TAG_FILTER//" | cut -d ' ' -f 1 | sed -r 's/-b[0-9]+//' | sed 's/u//'`
+export OBF_JDK_BUILD_NUMBER=`hg tags | grep $TAG_FILTER | head -1 | sed "s/$TAG_FILTER//" | cut -d ' ' -f 1 | sed -r 's/u[0-9]+-//'`
 
 popd >>/dev/null
 

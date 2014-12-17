@@ -145,8 +145,9 @@ function build_old()
   NUM_CPUS=`grep "processor" /proc/cpuinfo | sort -u | wc -l`
   [ $NUM_CPUS -gt 8 ] && NUM_CPUS=8
 
-  export BUILD_NUMBER="$OBF_BUILD_DATE"
-  export MILESTONE="$OBF_MILESTONE"
+  export MILESTONE="fcs"
+  export JDK_UPDATE_VERSION=$OBF_UPDATE_VERSION
+  export BUILD_NUMBER=$OBF_JDK_BUILD_NUMBER
 
   export ALT_BOOTDIR=$OBF_BOOTDIR
   export LD_LIBRARY_PATH=
@@ -200,10 +201,13 @@ function build_new()
   if [ -f common/autoconf/version-numbers ]; then
     mv common/autoconf/version-numbers common/autoconf/version-numbers.orig
     cat common/autoconf/version-numbers.orig | grep -v "MILESTONE" | grep -v "JDK_BUILD_NUMBER" | grep -v "COMPANY_NAME" > common/autoconf/version-numbers
+    sed -i "s/JDK_UPDATE_VERSION=/JDK_UPDATE_VERSION=$OBF_UPDATE_VERSION/" common/autoconf/version-numbers
   fi
 
   export JDK_BUILD_NUMBER=$OBF_BUILD_DATE
-  export MILESTONE=$OBF_MILESTONE
+  export MILESTONE="fcs"
+  export JDK_UPDATE_VERSION=$OBF_UPDATE_VERSION
+  export BUILD_NUMBER=$OBF_JDK_BUILD_NUMBER
   export COMPANY_NAME=$BUNDLE_VENDOR
   export STATIC_CXX=false
 
@@ -227,7 +231,7 @@ function build_new()
 
       bash $OBF_SOURCES_PATH/common/autoconf/configure --with-boot-jdk=$OBF_BOOTDIR --with-freetype=$OBF_FREETYPE_DIR --with-cacerts-file=$OBF_DROP_DIR/cacerts \
                --with-ccache-dir=$OBF_WORKSPACE_PATH/.ccache --enable-debug \
-               -with-build-number=$OBF_BUILD_DATE --with-milestone=$OBF_BUILD_NUMBER $EXTRA_FLAGS
+               -with-build-number=$BUILD_NUMBER --with-milestone=$MILESTONE $EXTRA_FLAGS
 
   else
 
@@ -246,7 +250,7 @@ function build_new()
 
       bash $OBF_SOURCES_PATH/common/autoconf/configure --with-boot-jdk=$OBF_BOOTDIR --with-freetype=$OBF_FREETYPE_DIR --with-cacerts-file=$OBF_DROP_DIR/cacerts \
                --with-ccache-dir=$OBF_WORKSPACE_PATH/.ccache \
-               -with-build-number=$OBF_BUILD_DATE --with-milestone=$OBF_MILESTONE $EXTRA_FLAGS
+               -with-build-number=$BUILD_NUMBER --with-milestone=$MILESTONE $EXTRA_FLAGS
 
   fi
 
